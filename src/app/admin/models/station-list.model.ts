@@ -17,3 +17,7 @@ export interface IDistance {
   distance: number;
   id: number;
 }
+
+export interface ICreateStationResponse {
+  id: number;
+}
