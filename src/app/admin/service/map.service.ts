@@ -7,7 +7,7 @@ import * as L from 'leaflet';
 export class MapService {
   private map!: L.Map;
 
-  private currentMarker: L.Marker | undefined;
+  private currentMarker!: L.Marker;
 
   public initMap(mapId: string, center: [number, number], zoom: number): void {
     this.map = L.map(mapId, {
