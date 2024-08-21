@@ -1,8 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { AfterViewInit, Component, inject } from '@angular/core';
 // import { concatMap } from 'rxjs';
 import { AdminService } from './service/admin.service';
 import { ICreateStation } from './models/create-station.model';
 import { ICreateAdmin } from './models/create-admin';
+import { MapService } from './service/map.service';
 
 @Component({
   selector: 'app-admin',
@@ -11,8 +12,10 @@ import { ICreateAdmin } from './models/create-admin';
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.scss',
 })
-export class AdminComponent {
+export class AdminComponent implements AfterViewInit {
   private adminService = inject(AdminService);
+
+  private mapService = inject(MapService);
 
   newStation: ICreateStation = {
     city: 'Birmingham',
@@ -47,4 +50,8 @@ export class AdminComponent {
   //       error: (error) => console.error('error', error),
   //     });
   // }
+
+  ngAfterViewInit(): void {
+    this.mapService.initMap('map', [54.526, 15.2551], 4);
+  }
 }
