@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ICreateAdmin } from '@app/admin/models/create-admin';
 import { ICreateStation } from '@app/admin/models/create-station.model';
 import { AdminService } from '@app/admin/service/admin.service';
@@ -25,17 +25,11 @@ export class StationComponent implements AfterViewInit {
 
   protected items = ['Luke Skywalker', 'Leia Organa Solo', 'Darth Vader', 'Han Solo', 'Obi-Wan Kenobi', 'Yoda'];
 
-  protected items1 = ['R2-D2', 'C-3PO', 'Chewbacca', 'Padmé Amidala', 'Mace Windu', 'Qui-Gon Jinn'];
-
-  protected items2 = ['Lando Calrissian', 'Boba Fett', 'Palpatine', 'Anakin Skywalker', 'Ahsoka Tano', 'Rey Skywalker'];
-
   public stationForm: FormGroup = this.formBuilder.group({
     city: [{ value: '', disabled: true }],
     latitude: '',
     longitude: '',
-    connect1: new FormControl<string | null>(null),
-    connect2: new FormControl<string | null>(null),
-    connect3: new FormControl<string | null>(null),
+    connections: this.formBuilder.array([new FormControl<string | null>(null)]),
   });
 
   newStation: ICreateStation = {
@@ -100,5 +94,15 @@ export class StationComponent implements AfterViewInit {
         this.mapService.updateMapMarker(lat, lng, city);
       });
     }
+  }
+
+  public onSelectChange(index: number): void {
+    if (index === this.connections.length - 1) {
+      this.connections.push(new FormControl<string | null>(null));
+    }
+  }
+
+  get connections(): FormArray {
+    return this.stationForm.get('connections') as FormArray;
   }
 }
