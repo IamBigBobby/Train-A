@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as L from 'leaflet';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -8,6 +9,8 @@ export class MapService {
   private map!: L.Map;
 
   private currentMarker!: L.Marker;
+
+  public coordinates$ = new Subject<{ lat: number; lng: number; city: string }>();
 
   public initMap(mapId: string, center: [number, number], zoom: number): void {
     this.map = L.map(mapId, {
@@ -28,20 +31,21 @@ export class MapService {
     });
   }
 
-  private onMapClick(e: L.LeafletMouseEvent): void {
+  private async onMapClick(e: L.LeafletMouseEvent): Promise<void> {
     if (this.currentMarker) {
       this.map.removeLayer(this.currentMarker);
     }
 
     const marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(this.map);
 
-    this.getCityName(e.latlng.lat, e.latlng.lng).then((cityName) => {
-      marker.bindPopup(`${cityName}`).openPopup();
-    });
+    const cityName = await this.getCityName(e.latlng.lat, e.latlng.lng);
+    marker.bindPopup(`${cityName}`).openPopup();
 
     this.currentMarker = marker;
 
-    // console.log('Широта:', e.latlng.lat, 'Долгота:', e.latlng.lng);
+    this.coordinates$.next({ lat: e.latlng.lat, lng: e.latlng.lng, city: cityName });
+
+    // console.log('lat:', e.latlng.lat, 'lng:', e.latlng.lng, "city:", cityName);
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -50,6 +54,6 @@ export class MapService {
       `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=10&addressdetails=1`
     );
     const data = await response.json();
-    return data.address.city || data.address.town || data.address.village || 'Неизвестный город';
+    return data.address.city || data.address.town || data.address.village || 'Unknown area';
   }
 }

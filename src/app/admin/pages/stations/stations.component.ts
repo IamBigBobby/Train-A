@@ -39,10 +39,10 @@ export class StationComponent implements AfterViewInit {
   });
 
   newStation: ICreateStation = {
-    city: 'Birmingham',
-    latitude: 52.4862,
-    longitude: -1.8904,
-    relations: [4, 7, 9, 14, 21],
+    city: 'Kalisz',
+    latitude: 51.76146548489399,
+    longitude: 18.088936305166833,
+    relations: [1, 2, 3, 4],
   };
 
   newAdmin: ICreateAdmin = {
@@ -50,27 +50,41 @@ export class StationComponent implements AfterViewInit {
     password: 'my-password',
   };
 
-  // constructor() {
-  //   this.adminService
-  //     .loginAdmin(this.newAdmin)
-  //     .pipe(
-  //       concatMap((response) => {
-  //         console.log('get admin token', response);
-  //         this.adminService.token$.next(response.token);
-  //         return this.adminService.createNewStation(this.newStation);
-  //       }),
-  //       concatMap((response) => {
-  //         console.log('new city id', response);
-  //         return this.adminService.getStationList();
-  //       })
-  //     )
-  //     .subscribe({
-  //       next: (response) => {
-  //         console.log('fetch data', response);
-  //       },
-  //       error: (error) => console.error('error', error),
-  //     });
-  // }
+  constructor() {
+    // this.adminService
+    //   .loginAdmin(this.newAdmin)
+    //   .pipe(
+    //     concatMap((response) => {
+    //       console.log('get admin token', response);
+    //       this.adminService.token$.next(response.token);
+    //       return this.adminService.createNewStation(this.newStation);
+    //     }),
+    //     concatMap((response) => {
+    //       console.log('new city id', response);
+    //       return this.adminService.getStationList();
+    //     })
+    //   )
+    //   .subscribe({
+    //     next: (response) => {
+    //       console.log('fetch data', response);
+    //     },
+    //     error: (error) => console.error('error', error),
+    //   });
+    // this.adminService.getStationList().subscribe({
+    //   next: (response) => {
+    //     console.log("fetch data", response)
+    //   },
+    //   error: (error) => console.error("error", error),
+    // })
+
+    this.mapService.coordinates$.subscribe(({ lat, lng, city }) => {
+      this.stationForm.patchValue({
+        latitude: lat,
+        longitude: lng,
+        city,
+      });
+    });
+  }
 
   ngAfterViewInit(): void {
     this.mapService.initMap('map', [54.526, 15.2551], 4);
