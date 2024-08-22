@@ -7,11 +7,11 @@
     </tui-input>
     <tui-input formControlName="latitude">
       Latitude
-      <input tuiTextfieldLegacy type="text" />
+      <input tuiTextfieldLegacy type="text" (change)="onCoordinatesChange()" />
     </tui-input>
     <tui-input formControlName="longitude">
       Longitude
-      <input tuiTextfieldLegacy type="text" />
+      <input tuiTextfieldLegacy type="text" (change)="onCoordinatesChange()" />
     </tui-input>
     <tui-select tuiTextfieldSize="m" class="tui-space_vertical-4" formControlName="connect1">
       Character

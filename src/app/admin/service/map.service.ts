@@ -49,11 +49,20 @@ export class MapService {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  private async getCityName(lat: number, lng: number): Promise<string> {
+  public async getCityName(lat: number, lng: number): Promise<string> {
     const response = await fetch(
       `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=10&addressdetails=1`
     );
     const data = await response.json();
     return data.address.city || data.address.town || data.address.village || 'Unknown area';
+  }
+
+  public updateMapMarker(lat: number, lng: number, city: string): void {
+    if (this.currentMarker) {
+      this.map.removeLayer(this.currentMarker);
+    }
+    this.currentMarker = L.marker([lat, lng]).addTo(this.map);
+    this.currentMarker.bindPopup(`${city}`).openPopup();
+    this.coordinates$.next({ lat, lng, city });
   }
 }

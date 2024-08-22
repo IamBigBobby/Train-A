@@ -89,4 +89,16 @@ export class StationComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.mapService.initMap('map', [54.526, 15.2551], 4);
   }
+
+  public onCoordinatesChange(): void {
+    const lat = parseFloat(this.stationForm.value.latitude);
+    const lng = parseFloat(this.stationForm.value.longitude);
+
+    if (!Number.isNaN(lat) && !Number.isNaN(lng)) {
+      this.mapService.getCityName(lat, lng).then((city) => {
+        this.stationForm.patchValue({ city });
+        this.mapService.updateMapMarker(lat, lng, city);
+      });
+    }
+  }
 }
