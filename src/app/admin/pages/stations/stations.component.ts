@@ -30,7 +30,7 @@ export class StationComponent implements AfterViewInit {
   protected items2 = ['Lando Calrissian', 'Boba Fett', 'Palpatine', 'Anakin Skywalker', 'Ahsoka Tano', 'Rey Skywalker'];
 
   public stationForm: FormGroup = this.formBuilder.group({
-    city: '',
+    city: [{ value: '', disabled: true }],
     latitude: '',
     longitude: '',
     connect1: new FormControl<string | null>(null),
