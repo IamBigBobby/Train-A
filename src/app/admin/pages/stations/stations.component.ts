@@ -4,15 +4,15 @@ import { ICreateAdmin } from '@app/admin/models/create-admin';
 import { ICreateStation } from '@app/admin/models/create-station.model';
 import { AdminService } from '@app/admin/service/admin.service';
 import { MapService } from '@app/admin/service/map.service';
-import { TuiDataList } from '@taiga-ui/core';
+import { TuiButton, TuiDataList } from '@taiga-ui/core';
 import { TuiDataListWrapper } from '@taiga-ui/kit/components/data-list-wrapper';
 import { TuiInputModule, TuiSelectModule } from '@taiga-ui/legacy';
-// import { concatMap } from 'rxjs';
+import { concatMap } from 'rxjs';
 
 @Component({
   selector: 'app-stations',
   standalone: true,
-  imports: [ReactiveFormsModule, TuiInputModule, TuiSelectModule, TuiDataListWrapper, TuiDataList],
+  imports: [ReactiveFormsModule, TuiInputModule, TuiSelectModule, TuiDataListWrapper, TuiDataList, TuiButton],
   templateUrl: './stations.component.html',
   styleUrl: './stations.component.scss',
 })
@@ -23,7 +23,7 @@ export class StationComponent implements AfterViewInit {
 
   private formBuilder = inject(FormBuilder);
 
-  protected items = ['Luke Skywalker', 'Leia Organa Solo', 'Darth Vader', 'Han Solo', 'Obi-Wan Kenobi', 'Yoda'];
+  protected items = [1, 2, 3, 4];
 
   public stationForm: FormGroup = this.formBuilder.group({
     city: [{ value: '', disabled: true }],
@@ -45,25 +45,6 @@ export class StationComponent implements AfterViewInit {
   };
 
   constructor() {
-    // this.adminService
-    //   .loginAdmin(this.newAdmin)
-    //   .pipe(
-    //     concatMap((response) => {
-    //       console.log('get admin token', response);
-    //       this.adminService.token$.next(response.token);
-    //       return this.adminService.createNewStation(this.newStation);
-    //     }),
-    //     concatMap((response) => {
-    //       console.log('new city id', response);
-    //       return this.adminService.getStationList();
-    //     })
-    //   )
-    //   .subscribe({
-    //     next: (response) => {
-    //       console.log('fetch data', response);
-    //     },
-    //     error: (error) => console.error('error', error),
-    //   });
     // this.adminService.getStationList().subscribe({
     //   next: (response) => {
     //     console.log("fetch data", response)
@@ -100,6 +81,37 @@ export class StationComponent implements AfterViewInit {
     if (index === this.connections.length - 1) {
       this.connections.push(new FormControl<string | null>(null));
     }
+  }
+
+  public createStation() {
+    const connections = this.stationForm.get('connections')?.value.slice(0, -1);
+
+    const newStation: ICreateStation = {
+      city: this.stationForm.get('city')?.value,
+      latitude: this.stationForm.get('latitude')?.value,
+      longitude: this.stationForm.get('longitude')?.value,
+      relations: connections,
+    };
+
+    this.adminService
+      .loginAdmin(this.newAdmin)
+      .pipe(
+        concatMap((response) => {
+          // console.log('get admin token', response);
+          this.adminService.token$.next(response.token);
+          return this.adminService.createNewStation(newStation);
+        }),
+        concatMap(() => {
+          // console.log('new city id', response);
+          return this.adminService.getStationList();
+        })
+      )
+      .subscribe({
+        next: () => {
+          // console.log('fetch data', response);
+        },
+        error: (error) => console.error('error', error),
+      });
   }
 
   get connections(): FormArray {

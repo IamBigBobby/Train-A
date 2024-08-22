@@ -1,6 +1,6 @@
 <div id="map"></div>
 <div class="tui-container">
-  <form class="station__form" [formGroup]="stationForm">
+  <form class="station__form" [formGroup]="stationForm" (ngSubmit)="createStation()">
     <tui-input formControlName="city">
       City
       <input tuiTextfieldLegacy type="text" />
@@ -27,5 +27,6 @@
         </tui-select>
       }
     </div>
+    <button size="l" tuiButton>Add station</button>
   </form>
 </div>
