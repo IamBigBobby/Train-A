@@ -1,14 +1,18 @@
 import { AfterViewInit, Component, inject } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ICreateAdmin } from '@app/admin/models/create-admin';
 import { ICreateStation } from '@app/admin/models/create-station.model';
 import { AdminService } from '@app/admin/service/admin.service';
 import { MapService } from '@app/admin/service/map.service';
+import { TuiDataList } from '@taiga-ui/core';
+import { TuiDataListWrapper } from '@taiga-ui/kit/components/data-list-wrapper';
+import { TuiInputModule, TuiSelectModule } from '@taiga-ui/legacy';
 // import { concatMap } from 'rxjs';
 
 @Component({
   selector: 'app-stations',
   standalone: true,
-  imports: [],
+  imports: [ReactiveFormsModule, TuiInputModule, TuiSelectModule, TuiDataListWrapper, TuiDataList],
   templateUrl: './stations.component.html',
   styleUrl: './stations.component.scss',
 })
@@ -16,6 +20,23 @@ export class StationComponent implements AfterViewInit {
   private adminService = inject(AdminService);
 
   private mapService = inject(MapService);
+
+  private formBuilder = inject(FormBuilder);
+
+  protected items = ['Luke Skywalker', 'Leia Organa Solo', 'Darth Vader', 'Han Solo', 'Obi-Wan Kenobi', 'Yoda'];
+
+  protected items1 = ['R2-D2', 'C-3PO', 'Chewbacca', 'Padmé Amidala', 'Mace Windu', 'Qui-Gon Jinn'];
+
+  protected items2 = ['Lando Calrissian', 'Boba Fett', 'Palpatine', 'Anakin Skywalker', 'Ahsoka Tano', 'Rey Skywalker'];
+
+  public stationForm: FormGroup = this.formBuilder.group({
+    city: '',
+    latitude: '',
+    longitude: '',
+    connect1: new FormControl<string | null>(null),
+    connect2: new FormControl<string | null>(null),
+    connect3: new FormControl<string | null>(null),
+  });
 
   newStation: ICreateStation = {
     city: 'Birmingham',
