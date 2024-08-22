@@ -112,6 +112,17 @@ export class StationComponent implements AfterViewInit {
         },
         error: (error) => console.error('error', error),
       });
+    this.resetForm();
+  }
+
+  public resetForm() {
+    this.stationForm.reset({
+      city: '',
+      latitude: '',
+      longitude: '',
+    });
+    this.connections.clear();
+    this.connections.push(new FormControl<string | null>(null));
   }
 
   get connections(): FormArray {
