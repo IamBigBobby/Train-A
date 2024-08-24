@@ -23,7 +23,14 @@
         >
           Connect to
           <input placeholder="select city" tuiTextfieldLegacy />
-          <tui-data-list-wrapper *tuiDataList [items]="items" />
+          @let stations = testItems$ | async;
+          @if (stations) {
+            <tui-data-list-wrapper *tuiDataList [items]="stations">
+              <ng-template tuiDataListItem let-item>
+                {{ item }}
+              </ng-template>
+            </tui-data-list-wrapper>
+          }
         </tui-select>
       }
     </div>
