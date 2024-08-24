@@ -9,13 +9,15 @@ import { StationsActions } from '@app/core/store/admin-store/actions/stations.ac
 import {
   selectCityNames,
   selectStationArr,
-  selectStationById,
+  selectStationIdAndCity,
 } from '@app/core/store/admin-store/selectors/stations.selectors';
 import { Store } from '@ngrx/store';
-import { TuiButton, TuiDataList } from '@taiga-ui/core';
+import { TuiLet } from '@taiga-ui/cdk/directives/let';
+import { TuiContext, tuiPure, TuiStringHandler } from '@taiga-ui/cdk';
+import { TuiButton, TuiDataList, TuiLoader } from '@taiga-ui/core';
 import { TuiDataListWrapper } from '@taiga-ui/kit/components/data-list-wrapper';
 import { TuiInputModule, TuiSelectModule } from '@taiga-ui/legacy';
-import { concatMap, map, Observable } from 'rxjs';
+import { concatMap } from 'rxjs';
 
 @Component({
   selector: 'app-stations',
@@ -28,6 +30,8 @@ import { concatMap, map, Observable } from 'rxjs';
     TuiDataList,
     TuiButton,
     CommonModule,
+    TuiLet,
+    TuiLoader,
   ],
   templateUrl: './stations.component.html',
   styleUrl: './stations.component.scss',
@@ -44,6 +48,8 @@ export class StationComponent implements AfterViewInit, OnInit {
   public citysNames$ = this.store.select(selectCityNames);
 
   public stations$ = this.store.select(selectStationArr);
+
+  public stationsAndId$ = this.store.select(selectStationIdAndCity);
 
   public stationForm: FormGroup = this.formBuilder.group({
     city: [{ value: '', disabled: true }],
@@ -137,7 +143,11 @@ export class StationComponent implements AfterViewInit, OnInit {
     return this.stationForm.get('connections') as FormArray;
   }
 
-  public getStationNameById(id: number): Observable<string | undefined> {
-    return this.store.select(selectStationById(id)).pipe(map((station) => station?.city));
+  // eslint-disable-next-line class-methods-use-this
+  @tuiPure
+  protected stringify(items: { id: number; city: string }[]): TuiStringHandler<TuiContext<number>> {
+    const map = new Map(items.map(({ id, city }) => [id, city] as [number, string]));
+
+    return ({ $implicit }: TuiContext<number>) => map.get($implicit) || '';
   }
 }

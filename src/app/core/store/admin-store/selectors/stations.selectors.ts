@@ -14,3 +14,7 @@ export const selectStationById = (stationId: number) =>
   createSelector(selectStationArr, (stationList: IStationList[]) =>
     stationList.find((station) => station.id === stationId)
   );
+
+export const selectStationIdAndCity = createSelector(selectStationArr, (stationList: IStationList[]) =>
+  stationList.map(({ id, city }) => ({ id, city }))
+);
