@@ -6,15 +6,12 @@ export const selectAppState = (state: AppState) => state;
 
 export const selectStationArr = createSelector(selectAppState, (state: AppState) => state.stationState.stationList);
 
-export const selectCityNames = createSelector(selectStationArr, (stationList: IStationList[]) =>
-  stationList.map((station) => station.city)
-);
-
-export const selectStationById = (stationId: number) =>
-  createSelector(selectStationArr, (stationList: IStationList[]) =>
-    stationList.find((station) => station.id === stationId)
-  );
-
 export const selectStationIdAndCity = createSelector(selectStationArr, (stationList: IStationList[]) =>
   stationList.map(({ id, city }) => ({ id, city }))
 );
+
+export const selectStationById = (id: number) =>
+  createSelector(
+    selectStationArr,
+    (stationList: IStationList[]) => stationList.find((station) => station.id === id)?.city
+  );

@@ -6,11 +6,7 @@ import { ICreateStation } from '@app/admin/models/create-station.model';
 import { AdminService } from '@app/admin/service/admin.service';
 import { MapService } from '@app/admin/service/map.service';
 import { StationsActions } from '@app/core/store/admin-store/actions/stations.actions';
-import {
-  selectCityNames,
-  selectStationArr,
-  selectStationIdAndCity,
-} from '@app/core/store/admin-store/selectors/stations.selectors';
+import { selectStationArr, selectStationIdAndCity } from '@app/core/store/admin-store/selectors/stations.selectors';
 import { Store } from '@ngrx/store';
 import { TuiLet } from '@taiga-ui/cdk/directives/let';
 import { TuiContext, tuiPure, TuiStringHandler } from '@taiga-ui/cdk';
@@ -45,8 +41,6 @@ export class StationComponent implements AfterViewInit, OnInit {
 
   private store = inject(Store);
 
-  public citysNames$ = this.store.select(selectCityNames);
-
   public stations$ = this.store.select(selectStationArr);
 
   public stationsAndId$ = this.store.select(selectStationIdAndCity);
@@ -62,6 +56,10 @@ export class StationComponent implements AfterViewInit, OnInit {
     email: 'admin@admin.com',
     password: 'my-password',
   };
+
+  get connections(): FormArray {
+    return this.stationForm.get('connections') as FormArray;
+  }
 
   ngOnInit(): void {
     this.store.dispatch(StationsActions.loadStationList());
@@ -111,12 +109,10 @@ export class StationComponent implements AfterViewInit, OnInit {
       .loginAdmin(this.newAdmin)
       .pipe(
         concatMap((response) => {
-          // console.log('get admin token', response);
           this.adminService.token$.next(response.token);
           return this.adminService.createNewStation(newStation);
         }),
         concatMap(() => {
-          // console.log('new city id', response);
           return this.adminService.getStationList();
         })
       )
@@ -139,8 +135,18 @@ export class StationComponent implements AfterViewInit, OnInit {
     this.connections.push(new FormControl<string | null>(null));
   }
 
-  get connections(): FormArray {
-    return this.stationForm.get('connections') as FormArray;
+  public getCityNameById(id: number): string {
+    const items = this.stationsAndId$;
+    let cityName = '';
+
+    items.subscribe((cities) => {
+      const city = cities.find((item) => item.id === id);
+      if (city) {
+        cityName = city.city;
+      }
+    });
+
+    return cityName;
   }
 
   // eslint-disable-next-line class-methods-use-this

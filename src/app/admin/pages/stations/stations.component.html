@@ -1,6 +1,4 @@
 <div class="tui-container">
-  <!-- @let objectStation = stationsAndId$ | async | json;
-  <div>{{objectStation}}</div> -->
   <div class="stations-top-info">
     <div id="map"></div>
     <form class="stations-top-info__form" [formGroup]="stationForm" (ngSubmit)="createStation()">
@@ -18,24 +16,6 @@
       </tui-input>
       <div class="station__connect-to-container" formArrayName="connections">
         @for (connectItem of connections.controls; track connectItem; let i = $index) {
-          <!-- <tui-select
-            tuiTextfieldSize="m"
-            class="tui-space_vertical-4"
-            [formControlName]="i"
-            (ngModelChange)="onSelectChange(i)"
-          >
-            Connect to
-            <input placeholder="select city" tuiTextfieldLegacy />
-            @let stations = stationsAndId$ | async;
-            @if (stations) {
-              <tui-data-list-wrapper *tuiDataList [items]="stations">
-                <ng-template tuiDataListItem let-item>
-                  {{ item }}
-                </ng-template>
-              </tui-data-list-wrapper>
-            }
-          </tui-select> -->
-
           <tui-select
             *tuiLet="stationsAndId$ | async as items"
             [valueContent]="items ? stringify(items) : loading"
@@ -71,7 +51,7 @@
             <span class="stations-bottom-info__connect-to-header">Connect to: </span><br />
             @for (connectedStation of station.connectedTo; track connectedStation) {
               @if (connectedStation) {
-                <div>{{ connectedStation.id }}</div>
+                <span>{{ getCityNameById(connectedStation.id) }} </span>
               }
             }
           </div>
