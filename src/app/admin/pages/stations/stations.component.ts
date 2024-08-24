@@ -6,12 +6,16 @@ import { ICreateStation } from '@app/admin/models/create-station.model';
 import { AdminService } from '@app/admin/service/admin.service';
 import { MapService } from '@app/admin/service/map.service';
 import { StationsActions } from '@app/core/store/admin-store/actions/stations.actions';
-import { selectCityNames } from '@app/core/store/admin-store/selectors/stations.selectors';
+import {
+  selectCityNames,
+  selectStationArr,
+  selectStationById,
+} from '@app/core/store/admin-store/selectors/stations.selectors';
 import { Store } from '@ngrx/store';
 import { TuiButton, TuiDataList } from '@taiga-ui/core';
 import { TuiDataListWrapper } from '@taiga-ui/kit/components/data-list-wrapper';
 import { TuiInputModule, TuiSelectModule } from '@taiga-ui/legacy';
-import { concatMap } from 'rxjs';
+import { concatMap, map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-stations',
@@ -37,7 +41,9 @@ export class StationComponent implements AfterViewInit, OnInit {
 
   private store = inject(Store);
 
-  public testItems$ = this.store.select(selectCityNames);
+  public citysNames$ = this.store.select(selectCityNames);
+
+  public stations$ = this.store.select(selectStationArr);
 
   public stationForm: FormGroup = this.formBuilder.group({
     city: [{ value: '', disabled: true }],
@@ -131,8 +137,7 @@ export class StationComponent implements AfterViewInit, OnInit {
     return this.stationForm.get('connections') as FormArray;
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  public getItemContent(item: { city: string; id: number }): string {
-    return item.city;
+  public getStationNameById(id: number): Observable<string | undefined> {
+    return this.store.select(selectStationById(id)).pipe(map((station) => station?.city));
   }
 }
