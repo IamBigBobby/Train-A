@@ -9,9 +9,3 @@ export const selectStationArr = createSelector(selectAppState, (state: AppState)
 export const selectStationIdAndCity = createSelector(selectStationArr, (stationList: IStationList[]) =>
   stationList.map(({ id, city }) => ({ id, city }))
 );
-
-export const selectStationById = (id: number) =>
-  createSelector(
-    selectStationArr,
-    (stationList: IStationList[]) => stationList.find((station) => station.id === id)?.city
-  );
