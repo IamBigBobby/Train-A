@@ -14,7 +14,6 @@ import { TuiButton, TuiDataList, TuiLoader } from '@taiga-ui/core';
 import { TuiDataListWrapper } from '@taiga-ui/kit/components/data-list-wrapper';
 import { TuiInputModule, TuiSelectModule } from '@taiga-ui/legacy';
 import { concatMap } from 'rxjs';
-import { IStationList } from '@app/admin/models/station-list.model';
 
 @Component({
   selector: 'app-stations',
@@ -75,7 +74,7 @@ export class StationComponent implements AfterViewInit, OnInit {
       });
     });
 
-    this.stationsAndId$.subscribe(cities => {
+    this.stationsAndId$.subscribe((cities) => {
       this.stationsAndId = cities;
     });
   }
@@ -116,22 +115,23 @@ export class StationComponent implements AfterViewInit, OnInit {
       .loginAdmin(this.newAdmin)
       .pipe(
         concatMap((response) => {
+          // console.log("token", response)
           this.adminService.token$.next(response.token);
           return this.adminService.createNewStation(newStation);
         }),
         concatMap(() => {
+          // console.log('list', response)
           return this.adminService.getStationList();
         })
       )
       .subscribe({
         next: () => {
           // console.log('fetch data', response);
+          this.store.dispatch(StationsActions.loadStationList());
         },
         error: (error) => console.error('error', error),
       });
     this.resetForm();
-
-    this.store.dispatch(StationsActions.loadStationList());
   }
 
   public resetForm() {
@@ -145,9 +145,9 @@ export class StationComponent implements AfterViewInit, OnInit {
   }
 
   public getCityNameById(id: number): string {
-    const city = this.stationsAndId.find(station => station.id === id);
+    const city = this.stationsAndId.find((station) => station.id === id);
     return city ? city.city : 'Unknown';
-  }  
+  }
 
   // eslint-disable-next-line class-methods-use-this
   @tuiPure

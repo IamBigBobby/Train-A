@@ -1,4 +1,3 @@
-import { ICreateStation } from '@app/admin/models/create-station.model';
 import { IStationList } from '@app/admin/models/station-list.model';
 import { createAction, props } from '@ngrx/store';
 
@@ -11,5 +10,5 @@ export enum EStationActions {
 export const StationsActions = {
   loadStationList: createAction(EStationActions.LoadStationList),
   loadStationsSuccess: createAction(EStationActions.LoadStationSuccess, props<{ stations: IStationList[] }>()),
-  createNewStation: createAction(EStationActions.CreateNewStation, props<{station: IStationList}>()),
+  createNewStation: createAction(EStationActions.CreateNewStation, props<{ station: IStationList }>()),
 };
