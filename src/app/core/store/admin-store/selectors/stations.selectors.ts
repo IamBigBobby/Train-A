@@ -14,3 +14,8 @@ export const selectDeletingIndicate = createSelector(
   selectAppState,
   (state: AppState) => state.stationState.deletingIndicate
 );
+
+export const selectCreatingIndicate = createSelector(
+  selectAppState,
+  (state: AppState) => state.stationState.creatingIndicate
+);

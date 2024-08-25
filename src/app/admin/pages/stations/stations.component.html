@@ -36,7 +36,7 @@
           </tui-select>
         }
       </div>
-      <button size="l" tuiButton>Add station</button>
+      <button size="l" [loading]="stationCreateIndicate$ | async" tuiButton>Add station</button>
     </form>
   </div>
   <div class="stations-bottom-info">

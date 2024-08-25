@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { AdminService } from '@app/admin/service/admin.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, concatMap, EMPTY, map, switchMap } from 'rxjs';
+import { catchError, EMPTY, map, switchMap } from 'rxjs';
 import { IStationList } from '@app/admin/models/station-list.model';
 import { ICreateAdmin } from '@app/admin/models/create-admin';
 import { Store } from '@ngrx/store';
@@ -37,31 +37,30 @@ export class StationEffectService {
     )
   );
 
-  createStation$ = createEffect(() => {
-    return this.actions$.pipe(
+  createStation$ = createEffect(() =>
+    this.actions$.pipe(
       ofType(StationsActions.createNewStation),
-      switchMap(({ station }) =>
-        this.adminService.loginAdmin(this.newAdmin).pipe(
-          concatMap((response) => {
-            this.adminService.token$.next(response.token);
-            return this.adminService.createNewStation(station);
+      switchMap(({ station }) => {
+        this.store.dispatch(StationsActions.createNewStationIndicate());
+        return this.adminService.createNewStation(station).pipe(
+          switchMap(() => this.adminService.getStationList()),
+          map((stations: IStationList[]) => {
+            this.store.dispatch(StationsActions.createNewStationIndicateSuccsess());
+            return StationsActions.loadStationsSuccess({ stations });
           }),
-          concatMap(() => {
-            return this.adminService.getStationList();
-          }),
-          map(() => StationsActions.loadStationList()),
           catchError((error) => {
-            if(error.status === 400){
+            if (error.status === 400) {
+              // eslint-disable-next-line no-alert
               alert('Error adding station: Incorrect data!');
             } else {
-              console.error('Error loading videos:', error);
+              console.error('Error adding station:', error);
             }
             return EMPTY;
           })
-        )
-      )
-    );
-  });
+        );
+      })
+    )
+  );
 
   deleteStation$ = createEffect(() =>
     this.actions$.pipe(
@@ -75,6 +74,7 @@ export class StationEffectService {
             return StationsActions.loadStationsSuccess({ stations });
           }),
           catchError((error) => {
+            // error from https://github.com/rolling-scopes-school/tasks/blob/master/tasks/train-a/admin/stations.md#acceptance-criteria-4-deleting-stations-5
             console.error('Error deleting station:', error);
             return EMPTY;
           })

@@ -5,6 +5,7 @@ import { ICreateStation } from '@app/admin/models/create-station.model';
 import { MapService } from '@app/admin/service/map.service';
 import { StationsActions } from '@app/core/store/admin-store/actions/stations.actions';
 import {
+  selectCreatingIndicate,
   selectDeletingIndicate,
   selectStationArr,
   selectStationIdAndCity,
@@ -56,6 +57,8 @@ export class StationComponent implements AfterViewInit, OnInit {
   public stationsAndId!: Pick<IStationList, 'id' | 'city'>[];
 
   public stationDeleteIndicate$ = this.store.select(selectDeletingIndicate);
+
+  public stationCreateIndicate$ = this.store.select(selectCreatingIndicate);
 
   public loadingStates: { [key: number]: boolean } = {};
 
@@ -109,7 +112,7 @@ export class StationComponent implements AfterViewInit, OnInit {
   }
 
   public createStation() {
-    const connections = Array.from(new Set((this.stationForm.get('connections')?.value.slice(0, -1) as number[])));
+    const connections = Array.from(new Set(this.stationForm.get('connections')?.value.slice(0, -1) as number[]));
 
     const newStation: ICreateStation = {
       city: this.stationForm.get('city')?.value,

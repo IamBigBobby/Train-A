@@ -8,7 +8,9 @@ export enum EStationActions {
   CreateNewStation = '[Station] Create New Station',
   DeleteStation = '[Station] Delete Station',
   DeleteStationIndicate = '[Station] Delete Station Indicate',
-  DeleteStationIndicateSuccsess = '[Station] Delet Station Indicate Succsess',
+  DeleteStationIndicateSuccsess = '[Station] Delete Station Indicate Succsess',
+  CreateNewStationIndicate = '[Station] Create Station Indicate',
+  CreateNewStationIndicateSuccsess = '[Station] Create Station Indicate Succsess',
 }
 
 export const StationsActions = {
@@ -18,4 +20,6 @@ export const StationsActions = {
   deleteStation: createAction(EStationActions.DeleteStation, props<{ idStation: number }>()),
   deleteStationIndicate: createAction(EStationActions.DeleteStationIndicate),
   deletStationIndicateSuccsess: createAction(EStationActions.DeleteStationIndicateSuccsess),
+  createNewStationIndicate: createAction(EStationActions.CreateNewStationIndicate),
+  createNewStationIndicateSuccsess: createAction(EStationActions.CreateNewStationIndicateSuccsess),
 };

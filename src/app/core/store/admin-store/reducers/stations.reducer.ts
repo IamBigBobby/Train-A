@@ -21,5 +21,17 @@ export const stationsReducer = createReducer(
       ...state,
       deletingIndicate: false,
     };
+  }),
+  on(StationsActions.createNewStationIndicate, (state): IStationState => {
+    return {
+      ...state,
+      creatingIndicate: true,
+    };
+  }),
+  on(StationsActions.createNewStationIndicateSuccsess, (state): IStationState => {
+    return {
+      ...state,
+      creatingIndicate: false,
+    };
   })
 );
