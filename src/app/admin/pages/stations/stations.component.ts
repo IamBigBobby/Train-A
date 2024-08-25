@@ -13,7 +13,6 @@ import { TuiContext, tuiPure, TuiStringHandler } from '@taiga-ui/cdk';
 import { TuiButton, TuiDataList, TuiLoader } from '@taiga-ui/core';
 import { TuiDataListWrapper } from '@taiga-ui/kit/components/data-list-wrapper';
 import { TuiInputModule, TuiSelectModule } from '@taiga-ui/legacy';
-import { concatMap } from 'rxjs';
 
 @Component({
   selector: 'app-stations',
@@ -45,7 +44,7 @@ export class StationComponent implements AfterViewInit, OnInit {
 
   public stationsAndId$ = this.store.select(selectStationIdAndCity);
 
-  public stationsAndId: { id: number | undefined; city: string }[] = [];
+  public stationsAndId: { id: number; city: string }[] = [];
 
   public stationForm: FormGroup = this.formBuilder.group({
     city: [{ value: '', disabled: true }],
@@ -110,27 +109,7 @@ export class StationComponent implements AfterViewInit, OnInit {
       longitude: this.stationForm.get('longitude')?.value,
       relations: connections,
     };
-
-    this.adminService
-      .loginAdmin(this.newAdmin)
-      .pipe(
-        concatMap((response) => {
-          // console.log("token", response)
-          this.adminService.token$.next(response.token);
-          return this.adminService.createNewStation(newStation);
-        }),
-        concatMap(() => {
-          // console.log('list', response)
-          return this.adminService.getStationList();
-        })
-      )
-      .subscribe({
-        next: () => {
-          // console.log('fetch data', response);
-          this.store.dispatch(StationsActions.loadStationList());
-        },
-        error: (error) => console.error('error', error),
-      });
+    this.store.dispatch(StationsActions.createNewStation({ station: newStation }));
     this.resetForm();
   }
 
@@ -151,7 +130,7 @@ export class StationComponent implements AfterViewInit, OnInit {
 
   // eslint-disable-next-line class-methods-use-this
   @tuiPure
-  protected stringify(items: { id: number | undefined; city: string }[]): TuiStringHandler<TuiContext<number>> {
+  protected stringify(items: { id: number; city: string }[]): TuiStringHandler<TuiContext<number>> {
     const map = new Map(items.map(({ id, city }) => [id, city] as [number, string]));
 
     return ({ $implicit }: TuiContext<number>) => map.get($implicit) || '';
