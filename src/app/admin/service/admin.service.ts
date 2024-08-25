@@ -25,6 +25,14 @@ export class AdminService {
     });
   }
 
+  deleteStation(stationId: number): Observable<void> {
+    return this.http.delete<void>(`/api/station/${stationId}`, {
+      headers: {
+        Authorization: `Bearer ${this.token$.value}`,
+      },
+    });
+  }
+
   // it's for developing
   loginAdmin(admin: ICreateAdmin): Observable<IAdminToken> {
     return this.http.post<IAdminToken>(`/api/signin`, admin);

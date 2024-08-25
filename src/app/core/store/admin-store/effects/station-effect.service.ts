@@ -55,4 +55,26 @@ export class StationEffectService {
       )
     );
   });
+
+  deleteStation$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(StationsActions.deleteStation),
+      switchMap(({ idStation }) =>
+        this.adminService.loginAdmin(this.newAdmin).pipe(
+          concatMap((response) => {
+            this.adminService.token$.next(response.token);
+            return this.adminService.deleteStation(idStation);
+          }),
+          concatMap(() => {
+            return this.adminService.getStationList();
+          }),
+          map(() => StationsActions.loadStationList()),
+          catchError((error) => {
+            console.error('Error deleting station:', error);
+            return EMPTY;
+          })
+        )
+      )
+    )
+  );
 }

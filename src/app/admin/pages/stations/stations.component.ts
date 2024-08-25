@@ -1,9 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, inject, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ICreateAdmin } from '@app/admin/models/create-admin';
 import { ICreateStation } from '@app/admin/models/create-station.model';
-import { AdminService } from '@app/admin/service/admin.service';
 import { MapService } from '@app/admin/service/map.service';
 import { StationsActions } from '@app/core/store/admin-store/actions/stations.actions';
 import { selectStationArr, selectStationIdAndCity } from '@app/core/store/admin-store/selectors/stations.selectors';
@@ -126,6 +124,10 @@ export class StationComponent implements AfterViewInit, OnInit {
   public getCityNameById(id: number): string {
     const city = this.stationsAndId.find((station) => station.id === id);
     return city ? city.city : 'Unknown';
+  }
+
+  public removeStation(idStation: number) {
+    this.store.dispatch(StationsActions.deleteStation({ idStation }));
   }
 
   // eslint-disable-next-line class-methods-use-this
