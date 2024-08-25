@@ -51,7 +51,11 @@ export class StationEffectService {
           }),
           map(() => StationsActions.loadStationList()),
           catchError((error) => {
-            console.error('Error loading videos:', error);
+            if(error.status === 400){
+              alert('Error adding station: Incorrect data!');
+            } else {
+              console.error('Error loading videos:', error);
+            }
             return EMPTY;
           })
         )
