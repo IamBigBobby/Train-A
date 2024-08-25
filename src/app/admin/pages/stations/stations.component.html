@@ -55,7 +55,7 @@
               }
             }
           </div>
-          <button size="s" tuiButton [loading]="stationDeleteIndicate$ | async" (click)="removeStation(station.id)">
+          <button size="s" tuiButton [loading]="loadingStates[$index]" (click)="removeStation(station.id, $index)">
             Remove station
           </button>
         </div>

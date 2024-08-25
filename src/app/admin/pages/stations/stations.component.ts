@@ -57,6 +57,8 @@ export class StationComponent implements AfterViewInit, OnInit {
 
   public stationDeleteIndicate$ = this.store.select(selectDeletingIndicate);
 
+  public loadingStates: { [key: number]: boolean } = {};
+
   public stationForm: FormGroup = this.formBuilder.group({
     city: [{ value: '', disabled: true }],
     latitude: '',
@@ -134,8 +136,14 @@ export class StationComponent implements AfterViewInit, OnInit {
     return city ? city.city : 'Unknown';
   }
 
-  public removeStation(idStation: number) {
+  public removeStation(idStation: number, index: number) {
+    this.loadingStates[index] = true;
     this.store.dispatch(StationsActions.deleteStation({ idStation }));
+    this.stationDeleteIndicate$.subscribe((deletingIndicate) => {
+      if (!deletingIndicate) {
+        this.loadingStates[index] = false;
+      }
+    });
   }
 
   // eslint-disable-next-line class-methods-use-this
