@@ -109,7 +109,7 @@ export class StationComponent implements AfterViewInit, OnInit {
   }
 
   public createStation() {
-    const connections = this.stationForm.get('connections')?.value.slice(0, -1);
+    const connections = Array.from(new Set((this.stationForm.get('connections')?.value.slice(0, -1) as number[])));
 
     const newStation: ICreateStation = {
       city: this.stationForm.get('city')?.value,
