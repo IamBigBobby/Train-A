@@ -6,6 +6,8 @@ import { Subject } from 'rxjs';
   providedIn: 'root',
 })
 export class MapService {
+  readonly RANDOM_CITY_LENGHT = 5;
+
   private map!: L.Map;
 
   private currentMarker!: L.Marker;
@@ -44,8 +46,6 @@ export class MapService {
     this.currentMarker = marker;
 
     this.coordinates$.next({ lat: e.latlng.lat, lng: e.latlng.lng, city: cityName });
-
-    // console.log('lat:', e.latlng.lat, 'lng:', e.latlng.lng, "city:", cityName);
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -54,7 +54,7 @@ export class MapService {
       `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=10&addressdetails=1`
     );
     const data = await response.json();
-    return data.address.city || data.address.town || data.address.village || 'Unknown area';
+    return data.address.city || data.address.town || data.address.village || `${this.getRandomCityName()}`;
   }
 
   public updateMapMarker(lat: number, lng: number, city: string): void {
@@ -64,5 +64,20 @@ export class MapService {
     this.currentMarker = L.marker([lat, lng]).addTo(this.map);
     this.currentMarker.bindPopup(`${city}`).openPopup();
     this.coordinates$.next({ lat, lng, city });
+  }
+
+  private getRandomCityName(): string {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    const cityLength = this.RANDOM_CITY_LENGHT;
+
+    let result = '';
+
+    for (let i = 0; i < cityLength; i += 1) {
+      const randomIndex = Math.floor(Math.random() * charactersLength);
+      result += characters[randomIndex];
+    }
+
+    return result;
   }
 }
