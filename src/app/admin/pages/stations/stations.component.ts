@@ -13,6 +13,7 @@ import { TuiContext, tuiPure, TuiStringHandler } from '@taiga-ui/cdk';
 import { TuiButton, TuiDataList, TuiLoader } from '@taiga-ui/core';
 import { TuiDataListWrapper } from '@taiga-ui/kit/components/data-list-wrapper';
 import { TuiInputModule, TuiSelectModule } from '@taiga-ui/legacy';
+import { IStationList } from '@app/admin/models/station-list.model';
 
 @Component({
   selector: 'app-stations',
@@ -32,7 +33,11 @@ import { TuiInputModule, TuiSelectModule } from '@taiga-ui/legacy';
   styleUrl: './stations.component.scss',
 })
 export class StationComponent implements AfterViewInit, OnInit {
-  private adminService = inject(AdminService);
+  readonly LAT_DEF = 54.526;
+
+  readonly LNG_DEF = 15.2551;
+
+  readonly SCALE_DEF = 4;
 
   private mapService = inject(MapService);
 
@@ -44,7 +49,7 @@ export class StationComponent implements AfterViewInit, OnInit {
 
   public stationsAndId$ = this.store.select(selectStationIdAndCity);
 
-  public stationsAndId: { id: number; city: string }[] = [];
+  public stationsAndId!: Pick<IStationList, 'id' | 'city'>[];
 
   public stationForm: FormGroup = this.formBuilder.group({
     city: [{ value: '', disabled: true }],
@@ -52,11 +57,6 @@ export class StationComponent implements AfterViewInit, OnInit {
     longitude: '',
     connections: this.formBuilder.array([new FormControl<string | null>(null)]),
   });
-
-  newAdmin: ICreateAdmin = {
-    email: 'admin@admin.com',
-    password: 'my-password',
-  };
 
   get connections(): FormArray {
     return this.stationForm.get('connections') as FormArray;
@@ -79,7 +79,7 @@ export class StationComponent implements AfterViewInit, OnInit {
   }
 
   ngAfterViewInit(): void {
-    this.mapService.initMap('map', [54.526, 15.2551], 4);
+    this.mapService.initMap('map', [this.LAT_DEF, this.LNG_DEF], this.SCALE_DEF);
   }
 
   public onCoordinatesChange(): void {
