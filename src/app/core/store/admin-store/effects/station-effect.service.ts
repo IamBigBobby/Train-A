@@ -49,8 +49,10 @@ export class StationEffectService {
             return StationsActions.loadStationsSuccess({ stations });
           }),
           catchError((error) => {
+            this.store.dispatch(StationsActions.createNewStationIndicateFailed())
             if (error.status === 400) {
               // eslint-disable-next-line no-alert
+
               alert('Error adding station: Incorrect data!');
             } else {
               console.error('Error adding station:', error);

@@ -33,5 +33,11 @@ export const stationsReducer = createReducer(
       ...state,
       creatingIndicate: false,
     };
-  })
+  }),
+  on(StationsActions.createNewStationIndicateFailed, (state): IStationState => {
+    return {
+      ...state,
+      creatingIndicate: false,
+    };
+  }),
 );

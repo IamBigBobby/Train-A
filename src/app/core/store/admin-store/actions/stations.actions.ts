@@ -11,6 +11,7 @@ export enum EStationActions {
   DeleteStationIndicateSuccsess = '[Station] Delete Station Indicate Succsess',
   CreateNewStationIndicate = '[Station] Create Station Indicate',
   CreateNewStationIndicateSuccsess = '[Station] Create Station Indicate Succsess',
+  CreateNewStationIndicateFailed = '[Station] Create Station Indicate Succsess'
 }
 
 export const StationsActions = {
@@ -22,4 +23,5 @@ export const StationsActions = {
   deletStationIndicateSuccsess: createAction(EStationActions.DeleteStationIndicateSuccsess),
   createNewStationIndicate: createAction(EStationActions.CreateNewStationIndicate),
   createNewStationIndicateSuccsess: createAction(EStationActions.CreateNewStationIndicateSuccsess),
+  createNewStationIndicateFailed: createAction(EStationActions.CreateNewStationIndicateFailed)
 };
