@@ -19,6 +19,12 @@
       gap: 10px;
       width: 60vw;
     }
+
+    @media (max-width: 900px){
+      &__form {
+        width: auto;
+      }
+    }
   }
 
   .stations-bottom-info {
@@ -60,4 +66,13 @@
 #map {
   width: 50vw;
   height: 50vh;
+}
+
+@media (max-width: 900px) {
+  .stations-top-info{
+    flex-direction: column;
+  }
+  #map {
+    width: auto;
+  }
 }
