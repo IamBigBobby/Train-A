@@ -39,5 +39,5 @@ export const stationsReducer = createReducer(
       ...state,
       creatingIndicate: false,
     };
-  }),
+  })
 );

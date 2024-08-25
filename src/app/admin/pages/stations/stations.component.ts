@@ -114,6 +114,14 @@ export class StationComponent implements AfterViewInit, OnInit {
   public createStation() {
     const connections = Array.from(new Set(this.stationForm.get('connections')?.value.slice(0, -1) as number[]));
 
+    if (connections.length === 0) {
+      this.store.dispatch(StationsActions.createNewStationIndicateFailed());
+
+      // eslint-disable-next-line no-alert
+      alert('add at least one station');
+      return;
+    }
+
     const newStation: ICreateStation = {
       city: this.stationForm.get('city')?.value,
       latitude: this.stationForm.get('latitude')?.value,
