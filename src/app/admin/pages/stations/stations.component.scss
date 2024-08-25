@@ -20,7 +20,7 @@
       width: 60vw;
     }
 
-    @media (max-width: 900px){
+    @media (width <= 900px) {
       &__form {
         width: auto;
       }
@@ -68,10 +68,11 @@
   height: 50vh;
 }
 
-@media (max-width: 900px) {
-  .stations-top-info{
+@media (width <= 900px) {
+  .stations-top-info {
     flex-direction: column;
   }
+
   #map {
     width: auto;
   }
