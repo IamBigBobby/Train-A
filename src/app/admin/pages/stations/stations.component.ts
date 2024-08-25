@@ -4,7 +4,11 @@ import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } f
 import { ICreateStation } from '@app/admin/models/create-station.model';
 import { MapService } from '@app/admin/service/map.service';
 import { StationsActions } from '@app/core/store/admin-store/actions/stations.actions';
-import { selectStationArr, selectStationIdAndCity } from '@app/core/store/admin-store/selectors/stations.selectors';
+import {
+  selectDeletingIndicate,
+  selectStationArr,
+  selectStationIdAndCity,
+} from '@app/core/store/admin-store/selectors/stations.selectors';
 import { Store } from '@ngrx/store';
 import { TuiLet } from '@taiga-ui/cdk/directives/let';
 import { TuiContext, tuiPure, TuiStringHandler } from '@taiga-ui/cdk';
@@ -12,6 +16,7 @@ import { TuiButton, TuiDataList, TuiLoader } from '@taiga-ui/core';
 import { TuiDataListWrapper } from '@taiga-ui/kit/components/data-list-wrapper';
 import { TuiInputModule, TuiSelectModule } from '@taiga-ui/legacy';
 import { IStationList } from '@app/admin/models/station-list.model';
+import { TuiButtonLoading } from '@taiga-ui/kit';
 
 @Component({
   selector: 'app-stations',
@@ -26,6 +31,7 @@ import { IStationList } from '@app/admin/models/station-list.model';
     CommonModule,
     TuiLet,
     TuiLoader,
+    TuiButtonLoading,
   ],
   templateUrl: './stations.component.html',
   styleUrl: './stations.component.scss',
@@ -48,6 +54,8 @@ export class StationComponent implements AfterViewInit, OnInit {
   public stationsAndId$ = this.store.select(selectStationIdAndCity);
 
   public stationsAndId!: Pick<IStationList, 'id' | 'city'>[];
+
+  public stationDeleteIndicate$ = this.store.select(selectDeletingIndicate);
 
   public stationForm: FormGroup = this.formBuilder.group({
     city: [{ value: '', disabled: true }],

@@ -9,5 +9,17 @@ export const stationsReducer = createReducer(
       ...state,
       stationList: stations,
     };
+  }),
+  on(StationsActions.deleteStationIndicate, (state): IStationState => {
+    return {
+      ...state,
+      deletingIndicate: true,
+    };
+  }),
+  on(StationsActions.deletStationIndicateSuccsess, (state): IStationState => {
+    return {
+      ...state,
+      deletingIndicate: false,
+    };
   })
 );

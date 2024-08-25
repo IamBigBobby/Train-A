@@ -55,7 +55,9 @@
               }
             }
           </div>
-          <button size="s" tuiButton (click)="removeStation(station.id)">Remove station</button>
+          <button size="s" tuiButton [loading]="stationDeleteIndicate$ | async" (click)="removeStation(station.id)">
+            Remove station
+          </button>
         </div>
       }
     }

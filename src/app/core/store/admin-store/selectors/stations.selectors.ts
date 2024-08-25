@@ -9,3 +9,8 @@ export const selectStationArr = createSelector(selectAppState, (state: AppState)
 export const selectStationIdAndCity = createSelector(selectStationArr, (stationList: IStationList[]) =>
   stationList.map(({ id, city }) => ({ id, city }))
 );
+
+export const selectDeletingIndicate = createSelector(
+  selectAppState,
+  (state: AppState) => state.stationState.deletingIndicate
+);

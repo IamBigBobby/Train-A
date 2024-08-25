@@ -7,6 +7,8 @@ export enum EStationActions {
   LoadStationSuccess = '[Station] Load Station Succsess',
   CreateNewStation = '[Station] Create New Station',
   DeleteStation = '[Station] Delete Station',
+  DeleteStationIndicate = '[Station] Delete Station Indicate',
+  DeleteStationIndicateSuccsess = '[Station] Delet Station Indicate Succsess',
 }
 
 export const StationsActions = {
@@ -14,4 +16,6 @@ export const StationsActions = {
   loadStationsSuccess: createAction(EStationActions.LoadStationSuccess, props<{ stations: IStationList[] }>()),
   createNewStation: createAction(EStationActions.CreateNewStation, props<{ station: ICreateStation }>()),
   deleteStation: createAction(EStationActions.DeleteStation, props<{ idStation: number }>()),
+  deleteStationIndicate: createAction(EStationActions.DeleteStationIndicate),
+  deletStationIndicateSuccsess: createAction(EStationActions.DeleteStationIndicateSuccsess),
 };
