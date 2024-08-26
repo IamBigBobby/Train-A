@@ -14,6 +14,10 @@ export class MapService {
 
   public coordinates$ = new Subject<{ lat: number; lng: number; city: string }>();
 
+  readonly MAX_ZOOM = 18;
+
+  readonly MIN__ZOOM = 3;
+
   public initMap(mapId: string, center: [number, number], zoom: number): void {
     this.map = L.map(mapId, {
       center,
@@ -21,8 +25,8 @@ export class MapService {
     });
 
     const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 18,
-      minZoom: 3,
+      maxZoom: this.MAX_ZOOM,
+      minZoom: this.MIN__ZOOM,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     });
 
