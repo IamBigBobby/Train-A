@@ -1,5 +1,6 @@
 import { Component, inject, OnDestroy } from '@angular/core';
 import { Subscription, tap } from 'rxjs';
+import { RouterModule } from '@angular/router';
 import { StationComponent } from './pages/stations/stations.component';
 import { ICreateAdmin } from './models/create-admin';
 import { AdminService } from './service/admin.service';
@@ -7,14 +8,14 @@ import { AdminService } from './service/admin.service';
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [StationComponent],
+  imports: [StationComponent, RouterModule],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.scss',
 })
-export class AdminComponent implements OnDestroy{
+export class AdminComponent implements OnDestroy {
   private adminService = inject(AdminService);
 
-  private adminSub: Subscription | null = null
+  private adminSub: Subscription | null = null;
 
   readonly newAdmin: ICreateAdmin = {
     email: 'admin@admin.com',
@@ -22,7 +23,7 @@ export class AdminComponent implements OnDestroy{
   };
 
   constructor() {
-    this.adminService
+    this.adminSub = this.adminService
       .loginAdmin(this.newAdmin)
       .pipe(
         tap((response) => {
@@ -33,8 +34,8 @@ export class AdminComponent implements OnDestroy{
   }
 
   ngOnDestroy(): void {
-    if(this.adminSub) {
-      this.adminSub.unsubscribe()
+    if (this.adminSub) {
+      this.adminSub.unsubscribe();
     }
   }
 }
