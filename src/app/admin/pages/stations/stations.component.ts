@@ -162,8 +162,8 @@ export class StationComponent implements AfterViewInit, OnInit {
   }
 
   public getCityNameById(id: number): string {
-    const city = this.stationsAndId.find((station) => station.id === id);
-    return city ? city.city : 'Unknown';
+    const station = this.stationsAndId.find((station) => station.id === id);
+    return station ? station.city : 'Unknown';
   }
 
   public removeStation(idStation: number, index: number) {
