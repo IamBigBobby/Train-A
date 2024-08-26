@@ -1,9 +1,10 @@
 import { Routes } from '@angular/router';
 
-export const TrainRoutes: Routes = [
+export const AdminRoutes: Routes = [
   {
-    path: 'admin',
-    loadComponent: () => import('./admin.component').then((m) => m.AdminComponent),
+    path: '',
+    redirectTo: 'station',
+    pathMatch: "full",
   },
   {
     path: 'station',
