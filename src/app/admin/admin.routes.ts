@@ -4,7 +4,7 @@ export const AdminRoutes: Routes = [
   {
     path: '',
     redirectTo: 'station',
-    pathMatch: "full",
+    pathMatch: 'full',
   },
   {
     path: 'station',
