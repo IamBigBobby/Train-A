@@ -5,4 +5,8 @@ import { SignInComponent } from './auth/pages/sign-in/sign-in.component';
 export const routes: Routes = [
   { path: 'signup', component: SignUpComponent },
   { path: 'signin', component: SignInComponent },
+  {
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.routes').then((m) => m.AdminRoutes),
+  },
 ];
