@@ -36,7 +36,7 @@ import { ICarriage } from '@app/admin/models/create-new-carriage-type.model';
   styleUrl: './carriage.component.scss',
 })
 export class CarriageComponent implements OnChanges {
-  @Input() carriagesData!: ICarriage;
+  @Input({ required: true }) carriagesData!: ICarriage;
 
   rows: number[] = [];
 
