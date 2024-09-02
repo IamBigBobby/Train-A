@@ -3,6 +3,7 @@ import { LayoutComponent } from '@app/core/components/layout/layout.component';
 import { SignUpComponent } from './auth/pages/sign-up/sign-up.component';
 import { SignInComponent } from './auth/pages/sign-in/sign-in.component';
 import { canActiveAdmin, canActiveAuth } from './auth/guards/access.guard';
+import { NotFoundComponent } from './core/components/not-found/not-found.component';
 
 export const routes: Routes = [
   {
@@ -21,5 +22,9 @@ export const routes: Routes = [
         canActivateChild: [canActiveAdmin],
       },
     ],
+  },
+  {
+    path: '**',
+    component: NotFoundComponent,
   },
 ];
