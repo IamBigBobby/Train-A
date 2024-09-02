@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { LayoutComponent } from '@app/core/components/layout/layout.component';
 import { SignUpComponent } from './auth/pages/sign-up/sign-up.component';
 import { SignInComponent } from './auth/pages/sign-in/sign-in.component';
-import { canActive, canActiveAdmin, canActiveAuth } from './auth/guards/access.guard';
+import { canActiveAdmin, canActiveAuth } from './auth/guards/access.guard';
 
 export const routes: Routes = [
   {
@@ -12,7 +12,6 @@ export const routes: Routes = [
       {
         path: '',
         loadChildren: () => import('./train/train.routes').then((m) => m.TrainRoutes),
-        canActivateChild: [canActive],
       },
       { path: 'signup', component: SignUpComponent, canActivate: [canActiveAuth] },
       { path: 'signin', component: SignInComponent, canActivate: [canActiveAuth] },
