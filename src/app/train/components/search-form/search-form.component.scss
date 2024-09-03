@@ -45,15 +45,21 @@
   }
 }
 
+@include desktop {
+  :host {
+    max-width: 986px;
+  }
+}
+
 @include tablet {
   :host {
-    max-width: 740px;
+    max-width: calc(100vw - 40px);
   }
 }
 
 @include mobile {
   :host {
-    max-width: 500px;
+    max-width: calc(100vw - 40px);
   }
 
   .center {
@@ -73,7 +79,7 @@
 
 @include small-mobile {
   :host {
-    max-width: 300px;
+    max-width: calc(100vw - 40px);
   }
 
   .tui-icon-button {
