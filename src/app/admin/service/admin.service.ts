@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { ICreateStationResponse, IStation } from '../models/station-list.model';
 import { ICreateStation } from '../models/create-station.model';
 import { ICarriage } from '../models/create-new-carriage-type.model';
+import { IRoutes } from '../models/routes.model';
 
 @Injectable({
   providedIn: 'root',
@@ -33,5 +34,21 @@ export class AdminService {
 
   updateCarriageType(carriageType: string, updateCarriageType: ICarriage): Observable<Omit<ICarriage, 'code'>> {
     return this.http.put<Omit<ICarriage, 'code'>>(`/api/carriage/${carriageType}`, updateCarriageType);
+  }
+
+  getRoutes(): Observable<IRoutes[]> {
+    return this.http.get<IRoutes[]>('/api/route');
+  }
+
+  createRoute(newRoute: IRoutes): Observable<IRoutes> {
+    return this.http.post<IRoutes>('/api/route', newRoute);
+  }
+
+  updRoutes(IdRoute: number, updRoute: IRoutes): Observable<IRoutes> {
+    return this.http.put<IRoutes>(`/api/route/${IdRoute}`, updRoute);
+  }
+
+  deleteRoute(IdRoute: number): Observable<void> {
+    return this.http.delete<void>(`/api/route/${IdRoute}`);
   }
 }
