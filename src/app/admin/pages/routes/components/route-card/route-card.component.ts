@@ -71,8 +71,6 @@ export class RouteCardComponent {
 
   @Input({ required: true }) carriagesDataAll: Pick<ICarriage, 'code' | 'name'>[] | undefined;
 
-  private adminService = inject(AdminService);
-
   private store = inject(Store);
 
   private router = inject(Router);
@@ -91,83 +89,5 @@ export class RouteCardComponent {
 
   public closeRoutesCreateForm() {
     this.isRoutesUpdFormOpen = false;
-  }
-
-  public showRouteInfo() {
-    // get
-    if (this.routeData.id) {
-      this.adminService.getRouteInformation(this.routeData.id).subscribe({
-        next(value) {
-          // eslint-disable-next-line no-console
-          console.log('show route info', value);
-        },
-      });
-    }
-  }
-
-  postRouteInfo() {
-    // post
-    const mockScheduleInfo: IScheduleInfo = {
-      segments: [
-        {
-          time: ['2024-08-08T22:19:57.708Z', '2024-08-12T03:29:57.708Z'],
-          price: {
-            carriage1: 210,
-            carriage2: 300,
-            carriage3: 250,
-            carriage4: 250,
-            carriage5: 250,
-            carriage6: 250,
-          },
-        },
-      ],
-    };
-
-    if (this.routeData.id) {
-      this.adminService.createNewRide(this.routeData.id, mockScheduleInfo).subscribe({
-        next(value) {
-          // eslint-disable-next-line no-console
-          console.log('create new ride', value);
-        },
-      });
-    }
-  }
-
-  updRouteInfo() {
-    const mockScheduleInfo: IScheduleInfo = {
-      segments: [
-        {
-          time: ['2024-08-08T22:19:57.708Z', '2024-08-12T03:29:57.708Z'],
-          price: {
-            carriage1: 210,
-            carriage2: 300,
-            carriage3: 250,
-            carriage4: 250,
-            carriage5: 250,
-            carriage6: 300,
-          },
-        },
-      ],
-    };
-
-    if (this.routeData.id) {
-      this.adminService.updateRide(this.routeData.id, 1898, mockScheduleInfo).subscribe({
-        next(value) {
-          // eslint-disable-next-line no-console
-          console.log('upd ride', value);
-        },
-      });
-    }
-  }
-
-  deleteRide() {
-    if (this.routeData.id) {
-      this.adminService.deleteRide(this.routeData.id, 1898).subscribe({
-        next(value) {
-          // eslint-disable-next-line no-console
-          console.log('delete route info', value);
-        },
-      });
-    }
   }
 }

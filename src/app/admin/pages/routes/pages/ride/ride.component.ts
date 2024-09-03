@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
-import { ICreateAdmin } from '@app/admin/models/create-admin';
 import { ICarriage } from '@app/admin/models/create-new-carriage-type.model';
 import { IScheduleInfo } from '@app/admin/models/route-info.module';
 import { IStation } from '@app/admin/models/station-list.model';
@@ -37,63 +36,8 @@ export class RideComponent implements OnInit {
 
   public riderInfo$ = this.store.select(selectRiderInfo);
 
-  // for developing
-  readonly newAdmin: ICreateAdmin = {
-    email: 'admin@admin.com',
-    password: 'my-password',
-  };
-
   ngOnInit(): void {
-    this.adminService
-      .loginAdmin(this.newAdmin)
-      .pipe(
-        tap((response) => {
-          this.adminService.token$.next(response.token);
-        })
-      )
-      .subscribe();
-
     this.store.dispatch(RiderAction.loadRiderList({ idRoute: this.routeId }));
-  }
-
-  // getRideInfo() {
-  //   this.adminService
-  //     .getRouteInformation(2)
-  //     .pipe(tap((data) => console.log('Reqest ride', data)))
-  //     .subscribe();
-  // }
-
-  postRouteInfo() {
-    // post
-    const mockScheduleInfo: IScheduleInfo = {
-      segments: [
-        {
-          time: ['2024-08-08T22:19:57.708Z', '2024-08-12T03:29:57.708Z'],
-          price: {
-            carriage1: 1500,
-          },
-        },
-        // {
-        //   time: ['2024-08-12T03:29:57.708Z', '2024-08-15T08:39:57.708Z'],
-        //   price: {
-        //     вагон:2000
-        //   },
-        // },
-        // {
-        //   time: ['2024-08-15T08:39:57.708Z', '2024-08-18T13:49:57.708Z'],
-        //   price: {
-        //     вагон:3000
-        //   },
-        // },
-      ],
-    };
-
-    this.adminService.createNewRide(533, mockScheduleInfo).subscribe({
-      next(value) {
-        // eslint-disable-next-line no-console
-        console.log('create new ride', value);
-      },
-    });
   }
 
   getCitiesByIds(cityIds: number[]): Observable<Pick<IStation, 'id' | 'city'>[]> {
