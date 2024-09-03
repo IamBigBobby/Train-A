@@ -7,9 +7,7 @@ import { Store } from '@ngrx/store';
 import { TuiButton } from '@taiga-ui/core';
 import { Observable } from 'rxjs';
 import { ICarriage } from '@app/admin/models/create-new-carriage-type.model';
-import { AdminService } from '@app/admin/service/admin.service';
-import { IScheduleInfo } from '@app/admin/models/route-info.module';
-import { Router, RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
 import { UpdRouteFormComponent } from '../upd-route-form/upd-route-form.component';
 
 @Component({
@@ -72,8 +70,6 @@ export class RouteCardComponent {
   @Input({ required: true }) carriagesDataAll: Pick<ICarriage, 'code' | 'name'>[] | undefined;
 
   private store = inject(Store);
-
-  private router = inject(Router);
 
   public isRoutesUpdFormOpen: boolean = false;
 

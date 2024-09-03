@@ -33,6 +33,7 @@ export const appConfig: ApplicationConfig = {
       OrderEffectService,
       CarriageEffectService,
       RoutesEffectService,
+      RiderEffectService,
     ]),
     provideStoreDevtools({ maxAge: 25, logOnly: environment.production }),
     importProvidersFrom(

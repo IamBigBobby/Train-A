@@ -7,7 +7,6 @@ import { ICarriage } from '../models/create-new-carriage-type.model';
 import { IRoutes } from '../models/routes.model';
 import { IRideInfo, IScheduleInfo } from '../models/route-info.module';
 
-
 @Injectable({
   providedIn: 'root',
 })

@@ -2,16 +2,14 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
 import { ICarriage } from '@app/admin/models/create-new-carriage-type.model';
-import { IScheduleInfo } from '@app/admin/models/route-info.module';
 import { IStation } from '@app/admin/models/station-list.model';
-import { AdminService } from '@app/admin/service/admin.service';
 import { RiderAction } from '@app/core/store/admin-store/actions/riders.actions';
 import { selectCarriagesIdAndName } from '@app/core/store/admin-store/selectors/carriage.selectors';
 import { selectRiderInfo } from '@app/core/store/admin-store/selectors/rider.selector';
 import { selectStationIdAndCity } from '@app/core/store/admin-store/selectors/stations.selectors';
 import { Store } from '@ngrx/store';
 import { TuiButton } from '@taiga-ui/core';
-import { map, Observable, tap } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { RideCardComponent } from '../components/ride-card/ride-card.component';
 
 @Component({
@@ -22,8 +20,6 @@ import { RideCardComponent } from '../components/ride-card/ride-card.component';
   styleUrls: ['./ride.component.scss'],
 })
 export class RideComponent implements OnInit {
-  private adminService = inject(AdminService);
-
   private route: ActivatedRoute = inject(ActivatedRoute);
 
   private store = inject(Store);
