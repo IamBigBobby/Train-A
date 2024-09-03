@@ -21,10 +21,14 @@ export const routes: Routes = [
         loadChildren: () => import('./admin/admin.routes').then((m) => m.AdminRoutes),
         canActivateChild: [canActiveAdmin],
       },
+      {
+        path: '**',
+        redirectTo: 'not-found',
+      },
+      {
+        path: 'not-found',
+        component: NotFoundComponent,
+      },
     ],
-  },
-  {
-    path: '**',
-    component: NotFoundComponent,
   },
 ];

@@ -13,15 +13,12 @@ export class AuthService {
 
   private readonly logoutUrl = '/api/logout';
 
-  private readonly adminLogin = 'admin@admin.com';
-
   constructor(private http: HttpClient) {}
 
   signIn(email: string, password: string): Observable<SignInResponse> {
     return this.http.post<SignInResponse>(this.signInUrl, { email, password }).pipe(
       tap((response) => {
         this.setToken(response.token);
-        this.setLogin(email);
       })
     );
   }
@@ -34,7 +31,6 @@ export class AuthService {
     return this.http.delete(this.logoutUrl).pipe(
       tap(() => {
         this.clearToken();
-        this.clearLogin();
       })
     );
   }
@@ -49,22 +45,6 @@ export class AuthService {
 
   public clearToken(): void {
     localStorage.removeItem('token');
-  }
-
-  private setLogin(login: string): void {
-    localStorage.setItem('login', login);
-  }
-
-  public getLogin(): string | null {
-    return localStorage.getItem('login');
-  }
-
-  public clearLogin(): void {
-    localStorage.removeItem('login');
-  }
-
-  public isAdmin(): boolean {
-    return this.adminLogin === this.getLogin();
   }
 
   public isAuthenticated(): boolean {

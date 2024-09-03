@@ -1,5 +1,9 @@
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { UserActions } from '@app/core/store/user-store/actions/user.actions';
+import { selectUserRole } from '@app/core/store/user-store/selectors/user.selectors';
+import { of, switchMap } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 
 export const canActiveAuth = () => {
@@ -15,29 +19,19 @@ export const canActiveAuth = () => {
   return true;
 };
 
-export const canActive = () => {
-  const authService = inject(AuthService);
-  const router = inject(Router);
-
-  const isAuth = authService.isAuthenticated();
-
-  if (isAuth) {
-    return true;
-  }
-
-  return router.createUrlTree(['/signin']);
-};
-
 export const canActiveAdmin = () => {
-  const authService = inject(AuthService);
   const router = inject(Router);
+  const store = inject(Store);
 
-  const isAuth = authService.isAuthenticated();
-  const isAdmin = authService.isAdmin();
+  store.dispatch(UserActions.loadUser());
 
-  if (isAuth && isAdmin) {
-    return true;
-  }
+  return store.select(selectUserRole).pipe(
+    switchMap((role) => {
+      if (role === 'manager') {
+        return of(true);
+      }
 
-  return router.createUrlTree(['/']);
+      return of(router.createUrlTree(['not-found']));
+    })
+  );
 };
